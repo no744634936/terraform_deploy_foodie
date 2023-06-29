@@ -1,0 +1,42 @@
+#! /bin/bash
+
+# 下载java jdk
+sudo amazon-linux-extras enable java-openjdk11
+sudo yum clean metadata && sudo yum -y install java-11-openjdk
+
+# 建立software 文件夹
+mkdir software && cd software
+
+# 下载 tomcat 9，并解压
+wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.76/bin/apache-tomcat-9.0.76.tar.gz
+tar -xvzf apache-tomcat-9.0.76.tar.gz
+# apache-tomcat-9.0.76 重命名为 tomcat-api 
+mv apache-tomcat-9.0.76  tomcat-api
+# 将tomcat-api 文件夹 移动到/usr/local/
+sudo mv tomcat-api/ /usr/local/
+
+# 添加环境变量
+# 注意注意，${rds_db_endpoint}是由上面的18号文件传过来，是数据库的ip地址，或者dns
+echo "export DB_HOSTNAME=${rds_db_endpoint}"  >> ~/.bashrc
+echo "export DB_PORT=3306"  >> ~/.bashrc
+echo "export DB_NAME=foodie_shop_dev"  >> ~/.bashrc
+echo "export DB_USERNAME=root" >> ~/.bashrc
+echo "export DB_PASSWORD=no744634"  >> ~/.bashrc
+echo "export SERVER_PORT=80"  >> ~/.bashrc
+#用来reload  .bashrc 文件
+source ~/.bashrc
+# 为 log4j 日志文件建立保存的路径,这个文件如果没有必须自己建立
+# 建立文件 /usr/local/tomcat-api/Projects_logs/foodie_dev.log
+# $_ 代表前一句命令的最后一个参数，即/usr/local/tomcat-api/Projects_logs
+mkdir -p /usr/local/tomcat-api/Projects_logs && touch $_/foodie_dev.log
+
+# 把 foodie-dev-api.war 上传到 服务器的 /usr/local/tomcat-api/webapps 文件夹里面
+# 他会自动解压把foodie-dev-api.war 包解压成一个foodie-dev-api 文件夹
+cd /usr/local/tomcat-api/webapps 
+wget https://github.com/no744634936/foodie-dev-release/releases/download/v0.0.2/foodie-dev-api.war
+
+# 启动 tomcat 放在环境变量之后会好一点吧
+cd  /usr/local/tomcat-api/bin
+./startup.sh
+
+cd ~
