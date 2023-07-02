@@ -14,7 +14,7 @@ module "alb" {
     security_groups = [module.loadbalancer_sg.security_group_id]
 
     # listener这个8080 是 loadbalancer要监听的8080端口，
-    # 流程是这样的，请求使用 ( Load Balancer DNS：8080) ---> loadbalancer监听到8080端口 ---> 去到 target_group_index = 0 的group ----> ec2 instance 的8080端口
+    # 流程是这样的，请求使用 ( Load Balancer DNS：8080) ---> loadbalancer监听到8080端口 ---> 去到 target_group_index = 0 的group的8080 端口 ----> ec2 instance 的8080端口
     http_tcp_listeners = [
         {
             port               = 8080
