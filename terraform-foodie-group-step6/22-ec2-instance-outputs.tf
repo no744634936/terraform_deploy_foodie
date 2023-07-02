@@ -13,15 +13,16 @@ output "ec2_bastion_public_ip" {
   value       = module.ec2_public.public_ip 
 }
 
-# Private EC2 Instances
-## ec2_private_instance_ids
-output "app3_ec2_private_instance_ids" {
-  description = "List of IDs of instances"
-  value       = module.ec2_private_app.id
-}
-## ec2_private_ip
-output "app3_ec2_private_ip" {
-  description = "List of private IP addresses assigned to the instances"
-  value       = module.ec2_private_app.private_ip 
-}
+# 将与18号文件相关的output 注释掉
+# # Private EC2 Instances
+# ## ec2_private_instance_ids
+# output "app3_ec2_private_instance_ids" {
+#   description = "List of IDs of instances"
+#   value       = module.ec2_private_app.id
+# }
+# ## ec2_private_ip
+# output "app3_ec2_private_ip" {
+#   description = "List of private IP addresses assigned to the instances"
+#   value       = module.ec2_private_app.private_ip 
+# }
 

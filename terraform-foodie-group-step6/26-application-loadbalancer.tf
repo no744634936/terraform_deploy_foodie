@@ -23,7 +23,6 @@ module "alb" {
         }
     ]  
 
-    # Target Groups,这里只建立了一个target group，放入两个ec2 instance
     target_groups = [
         # App1 Target Group - target group Index = 0
         {
@@ -35,7 +34,7 @@ module "alb" {
             health_check = {
                 enabled             = true
                 interval            = 30
-                path                = "/foodie-dev-api/databaseConnection"  //health_check块里面只需要改这个就好，每隔30s检查一次【IP：8080/foodie-dev-api/databaseConnection】这个api是否正常。如果health check 发生错误会发生什么事呢？
+                path                = "/foodie-dev-api/hello"  //health_check块里面只需要改这个就好，每隔30s检查一次【IP：8080/foodie-dev-api/databaseConnection】这个api是否正常。如果health check 发生错误会发生什么事呢？
                 port                = "traffic-port"
                 healthy_threshold   = 3
                 unhealthy_threshold = 3
@@ -44,17 +43,19 @@ module "alb" {
                 matcher             = "200-399"
             }
             protocol_version = "HTTP1"    //默认地写HTTP1
-            # App1 Target Group - Targets，这两个(ec2_private_app) private ec2 instance 包含在target group里面
-            targets = {
-                my_app1_vm1 = {
-                    target_id = module.ec2_private_app.id[0]
-                    port      = 8080
-                },
-                my_app1_vm2 = {
-                    target_id = module.ec2_private_app.id[1]
-                    port      = 8080
-                }
-            }
+
+            # # App1 Target Group - Targets，这两个(ec2_private_app) private ec2 instance 包含在target group里面
+            # targets = {
+            #     my_app1_vm1 = {
+            #         target_id = module.ec2_private_app.id[0]
+            #         port      = 8080
+            #     },
+            #     my_app1_vm2 = {
+            #         target_id = module.ec2_private_app.id[1]
+            #         port      = 8080
+            #     }
+            # }
+            
             tags =local.common_tags # Target Group Tags
         }  
     ]

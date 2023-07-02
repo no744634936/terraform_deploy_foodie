@@ -35,7 +35,7 @@ module "alb" {
             health_check = {
                 enabled             = true
                 interval            = 30
-                path                = "/foodie-dev-api/databaseConnection"  //health_check块里面只需要改这个就好，每隔30s检查一次【IP：8080/foodie-dev-api/databaseConnection】这个api是否正常。如果health check 发生错误会发生什么事呢？
+                path                = "/foodie-dev-api/hello"
                 port                = "traffic-port"
                 healthy_threshold   = 3
                 unhealthy_threshold = 3

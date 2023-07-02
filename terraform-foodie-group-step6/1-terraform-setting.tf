@@ -7,10 +7,13 @@ terraform {
       version = "~> 4.31.0"
     }
 
-    // null 这个插件的作用就是，将本地的pem 密钥传到云端服务器
     null = {
       source = "hashicorp/null"
       version = "~> 3.0"
+    }
+    random = {
+      source = "hashicorp/random"
+      version = "~> 3.4.0"
     }   
   }
 }
@@ -20,4 +23,9 @@ terraform {
 provider "aws"{
   region  = var.aws_region
   profile = "default"
+}
+
+# Create Random Pet Resource
+resource "random_pet" "this" {
+  length = 2
 }
