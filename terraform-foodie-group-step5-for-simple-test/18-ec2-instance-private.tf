@@ -21,6 +21,11 @@ module "ec2_private_app" {
   instance_count         = var.private_instance_count
   #将数据库的地址module.rdsdb.db_instance_address 传给app3-install.tmpl
   #app-install.tmpl 下载一个 java app 并连接数据库
-  user_data =  templatefile("app-install.tmpl",{rds_db_endpoint = module.rdsdb.db_instance_address})    
+  // 包含数据库的真正部署用这个
+  //user_data =  templatefile("app-install.tmpl",{rds_db_endpoint = module.rdsdb.db_instance_address})    
+  
+  // 不包含数据库的部署测试用这个
+  user_data =  templatefile("app-install.tmpl",{rds_db_endpoint = "fake host name"})    
+
   tags = local.common_tags
 }
